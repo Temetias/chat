@@ -1,0 +1,100 @@
+.Chat {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.Chat-new-separator {
+  height: 1rem;
+  position: relative;
+  margin-top: 1rem;
+}
+.Chat-new-separator-line {
+  position: absolute;
+  width: 100%;
+}
+
+.Chat-new-separator-text {
+  color: white;
+  top: -0.4rem;
+  left: 50%;
+  transform: translateX(-50%);
+  position: absolute;
+  background-color: #16181d;
+  padding: 0.2rem 1rem;
+}
+
+.Chat-message {
+  text-align: left;
+  border-radius: 0.4rem;
+  padding: 0.3rem 0.7rem;
+  background-color: #282c34;
+  box-shadow: 4px 4px 4px 0px #0000;
+  color: white;
+}
+
+.Chat-message-author {
+  padding-bottom: 0.3rem;
+}
+
+.Chat-message-time {
+  margin-top: 0.2rem;
+  font-size: 0.8rem;
+  text-align: right;
+}
+
+.Chat-message-wrap {
+  display: flex;
+  padding: 0.2rem 0;
+}
+
+.Chat-message-wrap-message {
+  position: relative;
+  max-width: 70%;
+}
+
+.Chat-message-wrap--new .Chat-message-wrap-message {
+  margin-top: 25px;
+}
+
+.Chat-message-wrap--new .Chat-message-wrap-message::after {
+  display: block;
+  content: "";
+  position: absolute;
+  background-color: #282c34;
+  top: 0;
+  left: -10px;
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(0 0, 100% 100%, 100% 0);
+}
+
+.Chat-message-wrap--me {
+  flex-direction: row-reverse;
+}
+
+.Chat-message-wrap--me .Chat-message-wrap-message::after {
+  left: calc(100% - 10px);
+  width: 20px;
+  height: 20px;
+  clip-path: polygon(0 0, 0 100%, 100% 0);
+}
+
+.Chat-message-wrap-avatar {
+  min-width: 50px;
+  margin: 0 1rem;
+}
+
+.Chat-message-wrap-avatar img {
+  height: 50px;
+  width: 50px;
+  border-radius: 50%;
+}
+
+@media only screen and (max-width: 480px) {
+  .Chat-message-time {
+    font-size: 0.7rem;
+  }
+  .Chat-message {
+    font-size: 0.9rem;
+  }
+}

@@ -1,0 +1,34 @@
+.Message-input {
+  height: 100%;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+.Message-input form {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+
+.Message-input input {
+  width: 85%;
+  height: 2.5rem;
+  max-height: 90%;
+  border-radius: 0.5rem 0 0 0.5rem;
+  border-style: none;
+  padding: 0 0.7rem;
+}
+
+.Message-input button {
+  border-radius: 0 0.5rem 0.5rem 0;
+  max-height: 90%;
+  height: 2.5rem;
+  width: 15%;
+  background-color: #61dafb;
+  color: black;
+  border-style: none;
+  font-weight: bold;
+  cursor: pointer;
+}

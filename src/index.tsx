@@ -1,17 +1,25 @@
-import React from 'react';
-import ReactDOM from 'react-dom';
-import './index.css';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
+import React from "react";
+import ReactDOM from "react-dom";
+import "./index.css";
+import App from "./App";
+import { errorOut } from "./util/general";
+
+const API = "" || errorOut("Please provide api in src/index.tsx.");
+const WS_API = "" || errorOut("Please provide ws api in src/index.tsx.");
+const USER_ID = "" || errorOut("Please provide user id in src/index.tsx.");
+const CHAT_ID = "" || errorOut("Please provide chat id in src/index.tsx.");
+const ACCESS_TOKEN =
+  "" || errorOut("Please provide access token src/index.tsx.");
 
 ReactDOM.render(
   <React.StrictMode>
-    <App />
+    <App
+      userId={USER_ID}
+      chatId={CHAT_ID}
+      accessToken={ACCESS_TOKEN}
+      api={API}
+      wsApi={WS_API}
+    />
   </React.StrictMode>,
-  document.getElementById('root')
+  document.getElementById("root")
 );
-
-// If you want to start measuring performance in your app, pass a function
-// to log results (for example: reportWebVitals(console.log))
-// or send to an analytics endpoint. Learn more: https://bit.ly/CRA-vitals
-reportWebVitals();

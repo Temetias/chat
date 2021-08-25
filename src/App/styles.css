@@ -1,0 +1,85 @@
+.App {
+  text-align: center;
+  height: 100vh;
+  background-color: #16181d;
+}
+
+.App-logo {
+  pointer-events: none;
+  height: 100%;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .App-logo {
+    animation: App-logo-spin infinite 20s linear;
+  }
+}
+
+.App-header {
+  background-color: #282c34;
+  height: 8%;
+  color: white;
+  display: flex;
+  align-items: center;
+  box-shadow: 4px 4px 4px 0px #0000;
+}
+
+.App-link {
+  color: #61dafb;
+}
+
+.App-desc {
+  font-size: 1.2rem;
+  padding-right: 0.2rem;
+}
+
+.App-chat-scroller {
+  /* Height is screen (100) - header (8) - messagebox (5) */
+  height: calc(100% - 8% - 5%);
+  overflow-y: scroll;
+  padding: 1rem 5rem;
+}
+
+.App-chat-message-input {
+  padding: 0 5rem;
+  background-color: #20232a;
+  height: 5%;
+}
+
+@media only screen and (max-width: 1024px) {
+  .App-chat-scroller {
+    padding: 1rem 2rem;
+  }
+  .App-chat-message-input {
+    padding: 0 2rem;
+  }
+}
+
+@media only screen and (max-width: 768px) {
+  .App-chat-scroller {
+    padding: 1rem 0.5rem;
+  }
+  .App-chat-message-input {
+    padding: 0 1rem;
+  }
+  .App-desc {
+    font-size: 1rem;
+    padding-right: 0.2rem;
+  }
+}
+
+@media only screen and (max-width: 480px) {
+  .App-desc {
+    font-size: 0.8rem;
+    padding-right: 0.2rem;
+  }
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
