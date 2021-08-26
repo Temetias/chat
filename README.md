@@ -17,6 +17,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 
 ### Retrospective
 
+- The credential configuration solution is very barebones, but as we're not doing actual auth it felt like there's no point investing more time there
 - Has no errorhandling whatsoever, so that should be fixed in a "real life scenario"
 - App root grew suprisingly big. Some sort of state management solution could be in order.
 - I wanted to try "components as folders" approach for once. I have mixed feelings about the approach since it makes vscode navigation a PITA, due to multiple files having the same name
