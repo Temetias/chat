@@ -3,44 +3,61 @@ import React from "react";
 import "./styles.css";
 import logo from "../assets/logo.svg";
 
+/**
+ * Wrapper around the message body, so that we can conditionally display the avatar
+ * of the sender and add some styling for the first chat of a "spam".
+ */
 const MessageWrap: React.FC<{
   message: ChatMessage;
   isByNewSender: boolean;
   isMe: boolean;
-}> = ({ message, isByNewSender, isMe }) => (
-  <div
-    className={`Chat-message-wrap ${
-      isByNewSender ? "Chat-message-wrap--new" : ""
-    } ${isMe ? "Chat-message-wrap--me" : ""}`}
-  >
-    <div className="Chat-message-wrap-avatar">
-      {isByNewSender ? (
-        <img
-          src={message.sender_avatar?.url || logo}
-          alt={`Avatar of ${message.sender_public_name}`}
+}> = ({ message, isByNewSender, isMe }) => {
+  const rootClass = `Chat-message-wrap ${
+    isByNewSender ? "Chat-message-wrap--new" : ""
+  } ${isMe ? "Chat-message-wrap--me" : ""}`;
+  return (
+    <div className={rootClass}>
+      <div className="Chat-message-wrap-avatar">
+        {isByNewSender ? (
+          <img
+            src={message.sender_avatar?.url || logo}
+            alt={`Avatar of ${message.sender_public_name}`}
+          />
+        ) : null}
+      </div>
+      <div className="Chat-message-wrap-message">
+        <MessageContent
+          isByNewSender={isByNewSender}
+          message={{
+            ...message,
+            sender_public_name: isMe ? "Me" : message.sender_public_name,
+          }}
         />
-      ) : null}
+      </div>
     </div>
-    <div className="Chat-message-wrap-message">
-      <MessageContent
-        message={{
-          ...message,
-          sender_public_name: isMe ? "Me" : message.sender_public_name,
-        }}
-      />
-    </div>
-  </div>
-);
+  );
+};
 
-const MessageContent: React.FC<{ message: ChatMessage }> = ({ message }) => (
+/**
+ * The main message body. Displays the message and some extra info like the date.
+ *
+ * NOTE(Teemu): This could do all sorts of cool things on hover, related to all
+ * the unutilized data in the ChatMessage.
+ */
+const MessageContent: React.FC<{
+  message: ChatMessage;
+  isByNewSender: boolean;
+}> = ({ message, isByNewSender }) => (
   <div className="Chat-message">
-    <div className="Chat-message-author">
-      <b>
-        {message.sender_type === "visitor"
-          ? "Visitor"
-          : message.sender_public_name}
-      </b>
-    </div>
+    {isByNewSender ? (
+      <div className="Chat-message-author">
+        <b>
+          {message.sender_type === "visitor"
+            ? "Visitor"
+            : message.sender_public_name}
+        </b>
+      </div>
+    ) : null}
     <div>{message.message}</div>
     <div className="Chat-message-time">
       {new Date(message.created_at).toLocaleTimeString().slice(0, 5)}
@@ -48,8 +65,18 @@ const MessageContent: React.FC<{ message: ChatMessage }> = ({ message }) => (
   </div>
 );
 
+/**
+ * Renders the provided messages, also needs the current user as a parameter,
+ * as we render the messages by the current user differently.
+ */
 const renderMessages = (messages: ChatMessage[], me: User) => {
+  // We filter the messages beforehand to gain access to the filtered array.
+  //
+  // NOTE(Teemu): This causes an extra loop which might end up being a
+  // performance concern. We can sacrifice readability to do a more
+  // imperative approach with only one loop but this'll work for now.
   const filteredMessages = messages.filter((msg) => msg.type === "msg");
+
   return filteredMessages.map((msg, idx) => (
     <MessageWrap
       key={msg.id}
@@ -60,13 +87,18 @@ const renderMessages = (messages: ChatMessage[], me: User) => {
   ));
 };
 
-type ChatProps = {
+/**
+ * The main chat renderer.
+ *
+ * Takes the messages provided by the rest api as "oldMessages" and the messages
+ * provided by the websocket as "newMessages" so we can do a nice visual split
+ * between them.
+ */
+const Chat: React.FC<{
   oldMessages: ChatMessage[];
   newMessages: ChatMessage[];
   me: User;
-};
-
-const Chat: React.FC<ChatProps> = ({ oldMessages, newMessages, me }) => (
+}> = ({ oldMessages, newMessages, me }) => (
   <div className="Chat">
     {renderMessages(oldMessages, me)}
     {newMessages.length ? (

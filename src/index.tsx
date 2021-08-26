@@ -2,24 +2,28 @@ import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
 import App from "./App";
-import { errorOut } from "./util/general";
+import conf, { Configuration } from "./conf";
 
-const API = "" || errorOut("Please provide api in src/index.tsx.");
-const WS_API = "" || errorOut("Please provide ws api in src/index.tsx.");
-const USER_ID = "" || errorOut("Please provide user id in src/index.tsx.");
-const CHAT_ID = "" || errorOut("Please provide chat id in src/index.tsx.");
-const ACCESS_TOKEN =
-  "" || errorOut("Please provide access token src/index.tsx.");
+/**
+ * Checks the provided configuration and in case of an error returns an
+ * JSX element stating the issue.
+ */
+const getConfError = ({
+  accessToken,
+  chatId,
+  userId,
+  api,
+  wsApi,
+}: Configuration) =>
+  !accessToken || !chatId || !userId || !api || !wsApi ? (
+    <h1>
+      Please provide proper configuration in <code>src/conf.ts</code>
+    </h1>
+  ) : null;
 
 ReactDOM.render(
   <React.StrictMode>
-    <App
-      userId={USER_ID}
-      chatId={CHAT_ID}
-      accessToken={ACCESS_TOKEN}
-      api={API}
-      wsApi={WS_API}
-    />
+    {getConfError(conf) || <App {...conf} />}
   </React.StrictMode>,
   document.getElementById("root")
 );

@@ -7,8 +7,14 @@ import { ChatMessage, User } from "@giosg/types";
 import { useEffect } from "react";
 import { useRef } from "react";
 import MessageInput from "../MessageInput";
-import { fetchData, getApiUrl, initWs } from "../util/web";
+import { apiRequest, getChatApiUrl, initWs } from "../util/web";
+import { Configuration } from "../conf";
 
+/**
+ * Static header for the application. We could maybe display something about
+ * the current user here, currently separated into it's own component purely
+ * for readability purposes.
+ */
 const Header: React.FC = () => (
   <header className="App-header">
     <img src={logo} className="App-logo" alt="logo" />
@@ -26,30 +32,35 @@ const Header: React.FC = () => (
   </header>
 );
 
-type AppProps = {
-  wsApi: string;
-  api: string;
-  chatId: string;
-  userId: string;
-  accessToken: string;
-};
-
-const App: React.FC<AppProps> = ({
+/**
+ * Our App root. Handles all of the data connections and acts as our data "source of truth".
+ *
+ * NOTE(Teemu): This is already relatively complex. Some of the data and functionality could
+ * be abstracted into a context or even use redux. For now, this is fine.
+ */
+const App: React.FC<Configuration> = ({
   chatId,
   userId,
   accessToken,
   api,
   wsApi,
 }) => {
+  // The messages from the rest api.
   const [oldMessages, setOldMessages] = useState<ChatMessage[]>([]);
+
+  // The messages from the websocket.
   const [newMessages, setNewMessages] = useState<ChatMessage[]>([]);
+
+  // Current user. Used to render users own messages differently.
   const [me, setMe] = useState<User | null>(null);
+
+  // Reference to the chat scroll. Used to reset scoll on new messages.
   const scroller = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     // Fetch chat data.
-    fetchData<{ results: ChatMessage[] }>({
-      url: getApiUrl({ userId, chatId, api }),
+    apiRequest<{ results: ChatMessage[] }>({
+      url: getChatApiUrl({ userId, chatId, api }),
       accessToken,
     }).then(({ results }) =>
       // According to the API docs, messages are ordered by the creation date, so no
@@ -58,7 +69,7 @@ const App: React.FC<AppProps> = ({
     );
 
     // Fetch user data.
-    fetchData<User>({
+    apiRequest<User>({
       url: api + "/api/v5/users/me",
       accessToken,
     }).then(setMe);
@@ -73,8 +84,9 @@ const App: React.FC<AppProps> = ({
         }
       }
     );
-  }, [chatId, userId, accessToken]);
+  }, [chatId, userId, accessToken, api, wsApi]);
 
+  // Handles scrolling when new messages arrive.
   useEffect(() => {
     if (scroller.current)
       scroller.current.scrollTop = scroller.current.scrollHeight;
@@ -93,8 +105,8 @@ const App: React.FC<AppProps> = ({
       <div className="App-chat-message-input">
         <MessageInput
           send={(message) =>
-            fetchData({
-              url: getApiUrl({ userId, chatId, api }),
+            apiRequest({
+              url: getChatApiUrl({ userId, chatId, api }),
               accessToken,
               data: { message },
             })
