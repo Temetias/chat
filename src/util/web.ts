@@ -60,4 +60,6 @@ export const apiRequest = <T extends any>({
     }),
     method: data ? "POST" : "GET",
     body: JSON.stringify(data),
-  }).then((res) => res.json());
+  })
+    .then((res) => res.json())
+    .catch(console.error);
