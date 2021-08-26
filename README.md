@@ -23,3 +23,4 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - I wanted to try "components as folders" approach for once. I have mixed feelings about the approach since it makes vscode navigation a PITA, due to multiple files having the same name
 - Responsiviness is there, but not great
 - The data would allow for so much more features... Had hard time stopping here
+- Tests would be cool
