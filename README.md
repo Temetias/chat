@@ -21,6 +21,7 @@ This project was bootstrapped with [Create React App](https://github.com/faceboo
 - Has no errorhandling whatsoever, so that should be fixed in a "real life scenario"
 - App root grew suprisingly big. Some sort of state management solution could be in order.
 - I wanted to try "components as folders" approach for once. I have mixed feelings about the approach since it makes vscode navigation a PITA, due to multiple files having the same name
+- This is about as far as I would go with "naked" CSS. Even SCSS would be cool if continuing from here.
 - Responsiviness is there, but not great
 - The data would allow for so much more features... Had hard time stopping here
 - Tests would be cool
